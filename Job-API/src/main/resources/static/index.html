@@ -1,0 +1,865 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0B0F17">
+  <title>MyJobs · SkillPulse — your job search, organized</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+    :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:#18243a;background:#f4f6fa;font-synthesis:none;--ink:#17243b;--muted:#758198;--line:#e4e9f1;--violet:#665cf0;--shadow:0 12px 32px #1c2a4610}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 10% 0%,#e9edff 0,transparent 35%),#f5f7fb}button,input,select{font:inherit}button{cursor:pointer}a{transition:color .15s,background .15s,border-color .15s}
+    .shell{min-height:100vh}.topbar{height:72px;background:#111d31;color:white;display:flex;align-items:center;justify-content:space-between;padding:0 max(24px,calc((100vw - 1240px)/2));box-shadow:0 4px 18px #111d3120}
+    .brand{display:flex;align-items:center;gap:11px;font-size:18px;font-weight:750;letter-spacing:-.3px}.brand-mark{display:grid;place-items:center;width:36px;height:36px;border-radius:12px;background:linear-gradient(145deg,#8b82ff,#5e55e8);color:white;font-size:18px;box-shadow:0 5px 14px #6258e755}
+    .top-note{font-size:12px;color:#bdc7d8}.layout{max-width:1240px;margin:0 auto;padding:32px 24px 64px}
+    .hero{position:relative;isolation:isolate;overflow:hidden;display:flex;justify-content:space-between;align-items:center;gap:28px;margin-bottom:24px;padding:34px 38px;min-height:220px;border-radius:22px;background:linear-gradient(115deg,#182847 0%,#252f62 58%,#5148b4 100%);box-shadow:0 18px 45px #242b5a28}
+    .hero:before,.hero:after{content:"";position:absolute;z-index:-1;border-radius:50%;pointer-events:none}.hero:before{width:340px;height:340px;right:26%;top:-250px;border:1px solid #ffffff1c;box-shadow:0 0 0 35px #ffffff08,0 0 0 75px #ffffff06}.hero:after{width:250px;height:250px;right:-80px;bottom:-170px;background:#9d91ff24}
+    .hero>div{max-width:610px}.eyebrow{margin:0 0 10px;color:#b7b2ff;text-transform:uppercase;letter-spacing:1.6px;font-size:11px;font-weight:800}
+    h1{font-size:clamp(29px,4vw,42px);line-height:1.12;letter-spacing:-1.6px;margin:0 0 10px;color:white}.sub{color:#748198;margin:0;line-height:1.65}.hero .sub{max-width:540px;color:#d0d6e5;font-size:14px}
+    .upload-card{position:relative;background:#fff;border:1px solid #ffffffa8;border-radius:16px;padding:18px;min-width:320px;max-width:380px;box-shadow:0 12px 32px #10192b2b}
+    .upload-card label{display:block;font-weight:750;font-size:13px;margin-bottom:11px;color:#24314a}.upload-row{display:flex;gap:8px;align-items:center}.upload-row input{width:100%;min-width:0;font-size:11px;color:#69758a}.upload-row input::file-selector-button{border:0;border-radius:7px;padding:8px 9px;margin-right:8px;background:#f1f1ff;color:#5148cc;font-weight:700;cursor:pointer}
+    .button{border:0;border-radius:10px;padding:10px 15px;font-weight:750;font-size:12px;transition:transform .15s,background .15s,box-shadow .15s}.button:hover{transform:translateY(-1px)}.button:disabled{opacity:.6;cursor:wait;transform:none}.primary{background:linear-gradient(135deg,#7168fa,#5b52e4);color:#fff;box-shadow:0 5px 12px #655cf033}.primary:hover{background:#5148d6;box-shadow:0 7px 16px #655cf044}.secondary{background:#eeedff;color:#5147d6}.secondary:hover{background:#e2dfff}.quiet{background:#f1f3f7;color:#526078}.quiet:hover{background:#e7eaf0}.danger{background:#fff0ef;color:#bc4c43}.danger:hover{background:#ffe5e2}
+    #resume-download[hidden]{display:none}
+    .message{display:none;margin:0 0 18px;padding:12px 15px;border-radius:11px;font-size:13px;border:1px solid transparent}.message.error{display:block;background:#fff0ef;color:#a33d34;border-color:#f7d8d4}.message.success{display:block;background:#edf9f2;color:#22764a;border-color:#d6efdf}
+    .profile-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:0 0 28px}.stat{background:#fff;border:1px solid #e8ebf3;border-radius:15px;padding:17px 18px;min-height:96px;box-shadow:0 4px 14px #17254406;transition:transform .18s,box-shadow .18s}.stat:hover{transform:translateY(-2px);box-shadow:var(--shadow)}.stat-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#8994a8;font-weight:800}.stat-value{margin-top:9px;font-size:20px;font-weight:760;letter-spacing:-.5px;color:#273650;overflow-wrap:anywhere}.stat-value.small{font-size:14px;line-height:1.5}.profile-grid .stat:last-child{background:linear-gradient(115deg,#fff,#fbfaff);border-color:#e3e1fa}
+    .skills-value{display:flex;flex-wrap:wrap;gap:7px}.skills-value .pill{font-size:10px}
+    .form-grid input:focus,.status-select:focus{border-color:#8f88fa;box-shadow:0 0 0 3px #7168fa1a;outline:none}
+    .tabs{display:flex;gap:5px;border-bottom:1px solid #e1e6ef;margin-bottom:22px}.tab{border:0;background:transparent;color:#7a8598;padding:12px 16px;font-weight:750;font-size:13px;border-bottom:2px solid transparent;margin-bottom:-1px}.tab:hover{color:#5148d6}.tab.active{color:#5449dc;border-color:#685df0}
+    .section-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin:24px 0 14px}.section-heading h2{margin:0;font-size:20px;letter-spacing:-.55px;color:#1c2941}.section-heading p{margin:6px 0 0;color:#7b8799;font-size:12px;line-height:1.5}.section-heading>p{max-width:760px}.filter-row{display:flex;gap:8px}.filter-row input,.filter-row select,.form-grid input,.form-grid select{border:1px solid #dfe4ed;border-radius:10px;background:#fff;padding:10px 11px;color:#28364c;outline:none}
+    .site-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:28px}.site-link{position:relative;background:#fff;border:1px solid #e6e9f1;border-radius:12px;padding:14px 14px 13px;color:#29364a;text-decoration:none;font-size:12px;font-weight:750;box-shadow:0 3px 10px #17254405;transition:border-color .15s,transform .15s,box-shadow .15s}.site-link:after{content:"↗";position:absolute;right:12px;top:11px;color:#a3aabd;font-size:12px}.site-link:hover{border-color:#a6a0fa;transform:translateY(-2px);box-shadow:0 9px 20px #39337c12;color:#5148d6}.site-link span{display:block;margin-top:6px;color:#929bad;font-size:10px;font-weight:500}
+    .board-heading>input{width:205px;border:1px solid #dfe4ed;border-radius:10px;padding:10px 12px;color:#344258;font-size:12px;outline:none}.board-heading>input:focus{border-color:#8f88fa;box-shadow:0 0 0 3px #7168fa1a}
+    .job-list,.application-list{display:grid;gap:12px}.job-card,.application-card{background:#fff;border:1px solid #e6eaf2;border-radius:15px;padding:19px 20px;display:grid;grid-template-columns:1fr auto;gap:18px;box-shadow:0 4px 14px #17254407;transition:border-color .15s,box-shadow .15s}.job-card:hover,.application-card:hover{border-color:#d6d4f5;box-shadow:0 9px 24px #17254410}.job-title{font-size:16px;font-weight:780;color:#202c42;margin:0 0 8px;letter-spacing:-.2px}.job-meta{font-size:11px;color:#778398;display:flex;gap:8px;flex-wrap:wrap;align-items:center}.job-keyword-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.job-keyword{border-radius:20px;padding:5px 9px;background:#f1f3f6;color:#67758a;font-size:10px;font-weight:650;line-height:1.3}.job-keyword.matched{background:#edf9f2;color:#23784b;font-weight:750}.job-keyword.related{background:#f1f0ff;color:#564fd0;font-weight:750}.pill{border-radius:20px;padding:5px 9px;background:#f1f0ff;color:#564fd0;font-size:10px;font-weight:750}.match{display:inline-flex;align-items:center;gap:5px;color:#23784b;font-size:12px;font-weight:800;white-space:nowrap}.job-actions{display:flex;align-items:center;gap:8px}.job-actions button{white-space:nowrap}.empty{padding:42px 24px;text-align:center;border:1px dashed #d4dbea;border-radius:15px;color:#7d899a;font-size:13px;background:#ffffffb8}.feed-status{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}.feed-badge{background:#edf9f2;color:#267347;border-radius:20px;padding:7px 10px;font-size:10px;font-weight:750}.feed-badge.offline{background:#fff0ef;color:#a33d34}.feed-description{font-size:12px;color:#69758a;margin:9px 0 0;line-height:1.6}.job-description{margin-top:12px;border:1px solid #edf0f5;border-radius:10px;padding:10px 12px;background:#fbfcfe}.job-description summary{font-size:11px;font-weight:750;color:#48566c;cursor:pointer}.job-description p{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;color:#59667b;line-height:1.65;margin:10px 0 0}.job-details{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.job-detail{padding:6px 9px;background:#f5f6fa;border-radius:8px;color:#566278;font-size:10px}.job-detail strong{color:#344258}.job-open{display:inline-block;margin-top:11px;padding:9px 13px;border-radius:9px;background:#6259e8;color:#fff;font-size:11px;font-weight:750;text-decoration:none}.job-open:hover,.application-card a:hover{color:#342ba9;text-decoration:underline}.job-open:hover{background:#e2dfff}
+    .results-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:15px 0 10px;color:#778398;font-size:11px}.results-summary strong{font-size:13px;color:#26344c}
+    .upload-hint{margin:9px 0 0;color:#8792a5;font-size:10px;line-height:1.5}.file-name{min-height:16px;margin:8px 0 0;color:#5d54df;font-size:11px;font-weight:650;overflow-wrap:anywhere}.workflow-hint{display:flex;align-items:center;gap:8px;margin:0 0 21px;color:#65728a;font-size:12px}.workflow-hint span{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#eeedff;color:#5147d6;font-weight:800}.board-count{margin:0;color:#8a95a8;font-size:10px}.message{line-height:1.5}.pill{line-height:1.3}.job-actions{min-width:145px;justify-content:space-between}.job-card:focus-within,.application-card:focus-within{outline:2px solid #8f88fa;outline-offset:2px}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #8f88fa;outline-offset:2px}
+    .filter-panel{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:11px;align-items:end;width:100%;padding:16px;border:1px solid #e6e9f1;border-radius:15px;background:#ffffffd9;box-shadow:0 5px 16px #17254406}.filter-field{display:grid;gap:6px;min-width:0}.filter-field label{font-size:10px;font-weight:750;color:#69758a}.filter-field input,.filter-field select{width:100%;min-width:0;border:1px solid #dfe4ed;border-radius:9px;padding:10px 10px;background:white;color:#344258;font-size:11px;outline:none}.filter-field input:focus,.filter-field select:focus{border-color:#8f88fa;box-shadow:0 0 0 3px #7168fa1a}.filter-actions{display:flex;align-items:center;gap:7px;grid-column:span 2}.filter-actions .button{flex:1;padding:10px 11px}.active-filters{margin:9px 2px 0;color:#778398;font-size:10px}.loading-state{display:flex;align-items:center;justify-content:center;gap:11px;min-height:140px;border:1px solid #e6eaf2;border-radius:15px;background:#fff;color:#69758a;font-size:13px}.spinner{width:18px;height:18px;border:2px solid #dedcff;border-top-color:#665cf0;border-radius:50%;animation:spin .75s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.job-match{width:112px;height:5px;margin:8px 0 0;overflow:hidden;border-radius:5px;background:#e8f1ea}.job-match span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#61bd83,#27935a)}.match-wrap{display:grid;justify-items:end}
+    .pagination-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 22px;padding:12px 14px;border:1px solid #e6e9f1;border-radius:12px;background:#fff;color:#69758a;font-size:11px}.pagination-bar label{display:flex;align-items:center;gap:8px;font-weight:700}.pagination-bar select{border:1px solid #dfe4ed;border-radius:8px;padding:7px 9px;background:#fff;color:#344258;font:inherit}.pagination-controls{display:flex;align-items:center;gap:8px}.pagination-controls .button{padding:8px 11px}.pagination-bar button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .tracker-top{display:flex;justify-content:space-between;align-items:center;gap:16px}.form-panel{background:#fff;border:1px solid #e5e9f1;border-radius:15px;padding:18px;margin:14px 0;box-shadow:0 5px 16px #17254407}.form-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.form-grid input{min-width:0;font-size:12px}.form-field{display:grid;gap:6px;min-width:0}.form-field>span{font-size:10px;font-weight:750;color:#69758a}.form-field input{width:100%;border:1px solid #dfe4ed;border-radius:9px;background:#fff;padding:10px 11px;color:#28364c;outline:none}.auth-links{display:flex;justify-content:space-between;gap:8px;margin-top:12px}.auth-links button{border:0;background:transparent;color:#5d54df;font-size:11px;font-weight:700;padding:5px 0}.auth-links button:hover{text-decoration:underline}.application-card{grid-template-columns:1fr auto;align-items:center}.application-card a{color:#5d54df;font-size:11px;font-weight:750;text-decoration:none}.status-select{border:1px solid #dfe4ed;border-radius:9px;padding:9px;color:#344258;background:white;font-size:11px}.app-company{font-size:11px;color:#788499;margin-top:6px;line-height:1.5}.footer{margin-top:36px;color:#939cad;font-size:10px;line-height:1.7;text-align:center}
+    [hidden]{display:none!important}
+    @media(max-width:1000px){.section-heading.feed-heading{align-items:stretch;flex-direction:column}.site-grid{grid-template-columns:repeat(4,1fr)}.filter-panel{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    @media(max-width:850px){.site-grid{grid-template-columns:repeat(3,1fr)}.profile-grid{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:repeat(2,1fr)}.hero{align-items:stretch;flex-direction:column;padding:30px}.upload-card{max-width:none;width:100%}.section-heading.feed-heading{gap:12px}.filter-panel{grid-template-columns:repeat(2,minmax(0,1fr))}.filter-actions{grid-column:1/-1}}
+    @media(max-width:560px){.layout{padding:20px 14px 40px}.topbar{height:62px;padding:0 16px}.brand{font-size:15px}.brand-mark{width:32px;height:32px}.top-note{display:none}.hero{padding:25px 21px;border-radius:17px;gap:20px;min-height:0}.hero .sub{font-size:13px}.upload-card{padding:15px}.upload-row{align-items:stretch;flex-direction:column}.upload-row input{font-size:10px}.upload-row button{width:100%}.profile-grid{gap:9px}.stat{padding:14px;min-height:86px}.stat-value{font-size:17px}.profile-grid .stat:last-child{grid-column:1/-1!important}.site-grid{grid-template-columns:repeat(2,1fr);gap:8px}.section-heading{align-items:flex-start;flex-direction:column}.section-heading.feed-heading{gap:12px}.board-heading>input{width:100%}.filter-panel{grid-template-columns:1fr 1fr;padding:12px;gap:9px}.filter-field:first-child{grid-column:1/-1}.filter-actions{grid-column:1/-1}.filter-actions .button{padding:10px 7px;font-size:11px}.active-filters{line-height:1.5}.tabs{margin-bottom:18px}.tab{padding:11px 12px;font-size:12px}.job-card,.application-card{grid-template-columns:1fr;padding:16px;gap:12px}.job-actions{justify-content:space-between}.job-actions button{flex:1}.match-wrap{justify-items:start}.job-match{margin-top:5px}.application-card>div:last-child{justify-content:flex-start!important;flex-wrap:wrap}.form-grid{grid-template-columns:1fr}.tracker-top{align-items:flex-start;flex-direction:column}.tracker-top>div:last-child{width:100%}.tracker-top>div:last-child button{flex:1}.empty{padding:32px 18px}}
+    @media(max-width:560px){.workflow-hint{gap:5px;font-size:10px;justify-content:space-between}.job-actions{min-width:0}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+    :root{font-family:"Plus Jakarta Sans",sans-serif;color:#cbd5e1;background:#0b0f17;--ink:#e2e8f0;--muted:#94a3b8;--line:#1e293b;--violet:#6366f1;--shadow:0 20px 40px -20px #0009;font-synthesis:none}
+    body,.shell{min-height:100vh;background:radial-gradient(900px 400px at 85% -10%,#6366f124,transparent 60%),#0b0f17;color:#cbd5e1}
+    .topbar{position:sticky;top:0;z-index:50;height:64px;background:#020617cc;backdrop-filter:blur(18px);border-bottom:1px solid #1e293bcc;box-shadow:none;padding:0 max(24px,calc((100vw - 1280px)/2))}
+    .brand{gap:11px;font-size:15px;letter-spacing:-.25px}.brand-mark{width:34px;height:34px;border-radius:10px;color:#a5b4fc;background:#6366f126;border:1px solid #6366f159;box-shadow:none}
+    .brand-copy{display:grid;gap:2px}.brand-copy strong{font-size:14px;font-weight:800}.brand-copy small{color:#94a3b8;font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.08em}
+    .top-note{color:#94a3b8;font-size:11px}.layout{max-width:1280px;padding:38px 24px 72px}
+    h1{color:#f8fafc;letter-spacing:-1.7px}.hero{background:linear-gradient(115deg,#0f172ae6,#111a31e6);border:1px solid #1e293b;border-radius:18px;box-shadow:0 20px 40px -20px #0009}
+    .hero:before{border-color:#6366f133;box-shadow:0 0 0 35px #6366f10d,0 0 0 75px #6366f10a}.hero:after{background:#6366f11c}
+    .eyebrow,.stat-label,.filter-field label,.form-field>span,.board-count{font-family:"JetBrains Mono",monospace;letter-spacing:.08em}
+    .eyebrow{color:#a5b4fc}.sub,.section-heading p{color:#94a3b8}.hero .sub{color:#a5b4c7}
+    .upload-card,.form-panel,.stat,.job-card,.application-card,.filter-panel,.pagination-bar,.loading-state,.empty,.site-link,.job-description,.job-detail{background:#0f172ae6;color:#cbd5e1;border-color:#1e293b;box-shadow:0 20px 40px -20px #0009}
+    .upload-card label,.job-title,.section-heading h2{color:#f1f5f9}.upload-hint,.file-name,.active-filters,.results-summary,.job-meta,.app-company{color:#94a3b8}
+    .upload-row input,.upload-row input::file-selector-button{color:#cbd5e1}.upload-row input::file-selector-button{background:#1e293b}
+    .button{border-radius:10px}.primary{background:#4f46e5;color:#fff;box-shadow:0 0 18px #6366f133}.primary:hover{background:#4338ca;box-shadow:0 0 20px #6366f159}
+    .secondary{background:#4f46e533;color:#a5b4fc;border:1px solid #6366f159}.secondary:hover{background:#4f46e54d}
+    .quiet{background:#0b0f17;color:#cbd5e1;border:1px solid #334155}.quiet:hover{background:#1e293b;color:#f8fafc}
+    .danger{background:#f43f5e1a;color:#fda4af;border:1px solid #f43f5e4d}.danger:hover{background:#f43f5e33}
+    .message.error{background:#f43f5e1a;color:#fda4af;border-color:#f43f5e4d}.message.success{background:#10b9811f;color:#6ee7b7;border-color:#10b9814d}
+    .stat{backdrop-filter:blur(14px);border-radius:16px;transition:border-color .2s,transform .2s}.stat:hover{border-color:#6366f173;box-shadow:0 20px 40px -20px #0009}
+    .stat-label{color:#94a3b8}.stat-value{color:#e2e8f0}.profile-grid .stat:last-child{background:#0f172ae6;border-color:#1e293b}
+    .pill{background:#33415559;color:#cbd5e1;border:1px solid #334155}
+    .tabs{gap:8px;border:0;margin:0 0 22px}.tab{border:1px solid transparent;border-radius:12px;color:#94a3b8;margin:0;padding:9px 16px;font-size:13px;transition:background-color .2s,color .2s}.tab:hover{color:#e2e8f0;background:#1e293b80}.tab.active{color:#a5b4fc;background:#4f46e533;border-color:#6366f14d;box-shadow:0 0 15px #6366f133}
+    .filter-panel{backdrop-filter:blur(14px)}.filter-field label,.form-field>span{color:#94a3b8}
+    .filter-field input,.filter-field select,.filter-row input,.filter-row select,.form-grid input,.form-grid select,.form-field input,.board-heading>input,.status-select,.pagination-bar select{background:#0b0f17;color:#e2e8f0;border-color:#1e293b}
+    .filter-field input::placeholder,.form-field input::placeholder,.board-heading>input::placeholder{color:#64748b}
+    .filter-field input:focus,.filter-field select:focus,.form-grid input:focus,.form-grid select:focus,.form-field input:focus,.status-select:focus,.board-heading>input:focus{border-color:#6366f1;box-shadow:0 0 0 3px #6366f126}
+    select option{background:#0f172a;color:#e2e8f0}
+    .job-card,.application-card{border-radius:16px;backdrop-filter:blur(14px);transition:border-color .2s,transform .2s}.job-card:hover,.application-card:hover{border-color:#6366f173;transform:translateY(-2px);box-shadow:0 20px 40px -20px #0009}
+    .job-title{font-size:15px}.job-meta{font-size:11px}.job-keyword{font-family:"JetBrains Mono",monospace;font-size:10px;border:1px solid #334155;background:#33415559;color:#cbd5e1;border-radius:8px;padding:4px 8px}
+    .job-keyword.matched{color:#6ee7b7;background:#10b9811f;border-color:#10b9814d}.job-keyword.related{color:#7dd3fc;background:#0ea5e91f;border-color:#0ea5e94d}.job-keyword:not(.matched):not(.related){color:#fcd34d;background:#f59e0b1f;border-color:#f59e0b4d}
+    .match{color:#a5b4fc}.job-match{background:#1e293b}.job-match span{background:linear-gradient(90deg,#6366f1,#10b981)}
+    .job-description{background:#0b0f17;border-color:#1e293b}.job-description summary{color:#cbd5e1}.job-description p{color:#94a3b8}.job-detail{border-radius:8px;color:#cbd5e1}.job-detail strong{color:#e2e8f0}
+    .job-open,.application-card a{display:inline-flex;align-items:center;gap:4px;padding:7px 12px;border-radius:999px;border:1px solid #6366f159;background:#6366f11f;color:#a5b4fc;font-size:12px;font-weight:650;text-decoration:none;transition:background-color .2s}
+    .job-open:hover,.application-card a:hover{background:#6366f133;color:#c7d2fe;text-decoration:none}
+    .site-link{border-radius:12px;transition:border-color .2s,transform .2s,color .2s}.site-link span{color:#94a3b8}.site-link:hover{border-color:#6366f173;color:#a5b4fc}
+    .feed-badge{background:#10b9811f;color:#6ee7b7;border:1px solid #10b9814d}.feed-badge.offline{background:#f43f5e1a;color:#fda4af;border-color:#f43f5e4d}
+    .loading-state,.empty{color:#94a3b8}.spinner{border-color:#334155;border-top-color:#6366f1}
+    .results-summary strong{color:#e2e8f0}.pagination-bar{color:#94a3b8}.pagination-bar button:disabled{opacity:.45}.auth-links button{color:#a5b4fc}.auth-links button:hover{color:#c7d2fe}.footer{color:#64748b}
+    .workflow-hint{color:#94a3b8}.workflow-hint span{background:#4f46e533;color:#a5b4fc}
+    .upload-card{width:min(390px,100%);min-width:320px;padding:24px;background:#0f172ae6;border:1px solid #1e293b;border-radius:18px;box-shadow:none}
+    .upload-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 14px}
+    .upload-kicker{margin:0;color:#94a3b8;font:500 10px "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase}
+    .resume-input{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .dropzone{display:grid;justify-items:center;align-content:center;gap:8px;width:100%;min-height:170px;padding:24px 18px;border:2px dashed #334155;border-radius:15px;background:#0b1222;color:#e2e8f0;text-align:center;cursor:pointer;transition:border-color .18s,background .18s,transform .18s}
+    .dropzone:hover,.dropzone.is-dragover{border-color:#818cf8;background:#111a31}
+    .dropzone.is-dragover{transform:scale(1.01)}
+    .dropzone:focus-visible{outline:2px solid #818cf8;outline-offset:3px}
+    .dropzone-icon{width:30px;height:30px;margin-bottom:3px;color:#818cf8}
+    .dropzone strong{font-size:15px;font-weight:700;letter-spacing:-.3px}
+    .dropzone-copy{max-width:275px;color:#64748b;font-size:11px;line-height:1.45}
+    .file-name{display:none;max-width:100%;margin:2px 0 0;color:#a5b4fc;font-size:11px;font-weight:650;overflow-wrap:anywhere}
+    .file-name:not(:empty){display:block}
+    .sample-divider{margin:20px 0 9px;color:#94a3b8;font:500 10px "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase}
+    .sample-chips{display:flex;flex-wrap:wrap;gap:8px}
+    .sample-chip{display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:7px 11px;border:1px solid #334155;border-radius:999px;color:#cbd5e1;font-size:11px;line-height:1.2}
+    .sample-chip svg{flex:none;color:#cbd5e1}
+    .resume-submit{width:100%;margin-top:12px}
+    .resume-submit[hidden]{display:none}
+    #resume-download{color:#a5b4fc!important}
+    .topbar{display:grid;grid-template-columns:1fr auto 1fr;gap:22px}
+    .brand-mark{display:grid;place-items:center}
+    .workspace-tabs{display:flex;align-items:center;gap:8px}
+    .workspace-tabs .tab{padding:10px 17px;border-radius:12px}
+    .workspace-tabs[hidden]{display:none}
+    #account-controls{justify-self:end;display:flex;align-items:center;gap:12px}
+    #account-controls[hidden]{display:none}
+    .layout{width:100%;max-width:none;padding:28px clamp(18px,2.4vw,36px) 60px}
+    #workspace{width:100%}
+    .workspace-grid{display:grid;grid-template-columns:minmax(0,1fr);align-items:start;gap:22px;width:100%}
+    .profile-sidebar{display:block;min-width:0;width:100%}
+    .workspace-resume-card{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.8fr);align-items:center;gap:12px 24px;width:100%;min-width:0;max-width:none;margin:0 0 24px;padding:20px 24px}
+    .workspace-resume-card .upload-card-head{grid-column:1/-1;margin:0}
+    .workspace-resume-card .dropzone{grid-column:1;grid-row:2;min-height:145px}
+    .sample-group{grid-column:2;grid-row:2;align-self:center;min-width:0}
+    .workspace-resume-card .sample-divider{margin:0 0 10px}
+    .workspace-resume-card .sample-chips{gap:8px}
+    .workspace-resume-card .resume-submit{margin:0}
+    .matcher-heading{padding:3px 2px 16px}
+    .matcher-heading h1{margin-bottom:8px;font-size:clamp(25px,3vw,34px)}
+    .matcher-heading .sub{font-size:12px}
+    .profile-card{display:grid;grid-template-columns:minmax(180px,.75fr) minmax(0,2fr);align-items:center;gap:12px 24px;width:100%;padding:16px 21px;border:1px solid #1e293b;border-radius:18px;background:#0f172ae6}
+    .profile-card-head{grid-column:1;grid-row:1/-1;display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0}
+    .profile-card-head h2{margin:0;color:#f1f5f9;font-size:16px}
+    .profile-card-head .stat-label{margin-bottom:6px}
+    .profile-facts{grid-column:2;grid-row:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:11px 16px;margin:0}
+    .profile-fact-label{display:block;color:#94a3b8;font:500 9px "JetBrains Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
+    .profile-fact-value{display:block;margin-top:5px;color:#e2e8f0;font-size:12px;font-weight:650;overflow-wrap:anywhere}
+    .profile-skills-card{display:grid;gap:12px;width:100%;min-width:0;margin-top:12px;padding:16px 21px;border:1px solid #1e293b;border-radius:18px;background:#0f172ae6}
+    .skills-heading{margin:0;color:#94a3b8;font:500 10px "JetBrains Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
+    .profile-skills-card .skills-value{min-width:0;gap:8px;align-content:start}
+    .profile-skills-card .skills-value .pill{max-width:100%;padding:5px 8px;border-radius:8px;font:500 10px "JetBrains Mono",monospace;overflow-wrap:anywhere;white-space:normal}
+    .workspace-resume-card .sample-chip{font-size:10px}
+    .results-column{min-width:0}
+    .results-column .section-heading{margin:4px 0 16px}
+    .results-column .section-heading h2{font-size:21px}
+    .results-column .filter-panel{grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:10px}
+    .results-column .filter-actions{grid-column:span 1}
+    .results-column .filter-actions .button{padding-inline:9px}
+    .job-list{gap:14px}
+    .job-card{grid-template-columns:64px minmax(0,1fr);align-items:start;gap:16px;padding:20px 22px}
+    .job-card-content{min-width:0}
+    .score-ring{display:grid;place-items:center;width:58px;height:58px;border-radius:50%;background:conic-gradient(#6366f1 var(--match-angle),#1e293b 0);position:relative;color:#f8fafc;font-size:12px;font-weight:800}
+    .score-ring:before{position:absolute;inset:6px;border-radius:50%;background:#0f172a;content:""}
+    .score-ring span{position:relative}
+    .job-card .job-title{font-size:15px;margin-bottom:5px}
+    .job-card .job-meta{font-size:11px}
+    .job-card .job-keyword-list{margin-top:11px}
+    .job-card .feed-description{margin:10px 0 0}
+    .job-card .job-open{margin-top:11px}
+    .board-section,.tracker-section{margin-top:32px}
+    .application-description{margin:7px 0 0;color:#94a3b8;font-size:12px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
+    .form-grid textarea{width:100%;min-height:105px;resize:vertical;border:1px solid #1e293b;border-radius:9px;background:#0b0f17;padding:10px 11px;color:#e2e8f0;font:inherit;font-size:12px;outline:none}
+    .form-grid textarea:focus{border-color:#6366f1;box-shadow:0 0 0 3px #6366f126}
+    .form-field textarea::placeholder{color:#64748b}
+    .description-field{grid-column:1/-1}
+    #workspace .message{max-width:760px;margin:0 0 20px}
+    #workspace .message.success{background:#10b9811f;color:#6ee7b7;border-color:#10b9814d}
+    #workspace .message.error{background:#f43f5e1a;color:#fda4af;border-color:#f43f5e4d}
+    @media(max-width:980px){.workspace-grid{gap:18px}.profile-card{grid-template-columns:minmax(150px,.8fr) minmax(0,2fr);gap:12px 16px}.results-column .filter-panel{grid-template-columns:repeat(2,minmax(0,1fr))}.results-column .filter-actions{grid-column:1/-1}}
+    @media(max-width:760px){.topbar{grid-template-columns:1fr auto;gap:8px}.workspace-tabs{grid-column:1/-1;grid-row:2;justify-content:center;padding-bottom:8px}.top-note{font-size:0}.topbar.workspace-open{height:auto;min-height:64px;padding-top:8px}.topbar.workspace-open .brand{grid-column:1;grid-row:1}.topbar.workspace-open #account-controls{grid-column:2;grid-row:1}.topbar.workspace-open .workspace-tabs{grid-column:1/-1;grid-row:2}.workspace-resume-card{grid-template-columns:1fr 1fr;gap:12px 18px}.profile-card{grid-template-columns:minmax(150px,.8fr) minmax(0,1fr);align-items:start}.profile-card-head{grid-column:1;grid-row:1}.profile-facts{grid-column:2;grid-row:1}.results-column .section-heading{margin-top:4px}}
+    @media(max-width:560px){.layout{padding:20px 14px 40px}.workspace-tabs .tab{padding:8px 12px;font-size:12px}.top-note{display:flex;font-size:0}.topbar.workspace-open{padding:8px 14px 0}.workspace-resume-card{grid-template-columns:1fr;padding:17px}.workspace-resume-card .upload-card-head,.workspace-resume-card .dropzone,.sample-group,.workspace-resume-card .resume-submit{grid-column:1;grid-row:auto}.workspace-resume-card .dropzone{min-height:132px}.profile-card{grid-template-columns:1fr;padding:16px}.profile-card-head,.profile-facts{grid-column:1;grid-row:auto}.profile-facts{gap:10px}.profile-skills-card{padding:16px}.results-column .filter-panel{grid-template-columns:1fr 1fr}.results-column .filter-field:first-child{grid-column:1/-1}.results-column .filter-actions{grid-column:1/-1}.job-card{grid-template-columns:48px minmax(0,1fr);gap:11px;padding:15px}.score-ring{width:46px;height:46px;font-size:10px}.score-ring:before{inset:5px}.job-card .job-title{font-size:14px}}
+    button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #818cf8;outline-offset:3px}
+    @media(max-width:850px){.topbar{padding:0 18px}.layout{padding-top:28px}.hero{border-radius:16px}}
+    @media(max-width:560px){.topbar{height:60px;padding:0 14px}.brand-copy small{font-size:8px}.layout{padding:22px 14px 42px}.hero{padding:22px 18px}.upload-card{min-width:0;padding:20px}.filter-panel{padding:12px}.tabs{gap:5px}.tab{padding:9px 10px}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h3l2-6 4 12 3-9 2 3h4"/></svg></span><span class="brand-copy"><strong>MyJobs · SkillPulse</strong><small>RESUME → SKILLS → MATCHED JOBS</small></span></div>
+      <nav class="workspace-tabs" id="workspace-tabs" aria-label="Workspace sections" hidden>
+        <button class="tab active" data-tab="discover" type="button">Job Matcher</button>
+        <button class="tab" data-tab="tracker" type="button">Application tracker <span id="tracker-count"></span></button>
+      </nav>
+      <div class="top-note" id="account-controls" hidden>A private workspace <button class="button quiet" id="logout" type="button">Sign out</button></div>
+    </header>
+    <main class="layout">
+      <section class="form-panel" id="auth-panel" style="max-width:480px;margin:40px auto">
+        <h2 id="auth-title" style="margin:0 0 8px">Sign in</h2>
+        <p class="sub" id="auth-description" style="font-size:13px;margin-bottom:18px">Your resume, job matches, and application tracker are private to your account.</p>
+        <p id="auth-error" class="message error" role="alert" hidden></p>
+        <p id="auth-status" class="message success" role="status" hidden></p>
+        <form id="auth-form">
+          <div class="form-grid" style="grid-template-columns:1fr">
+            <label class="form-field"><span>Email</span><input id="auth-email" type="email" autocomplete="email" maxlength="254" required></label>
+            <label class="form-field"><span>Password</span><input id="auth-password" type="password" autocomplete="current-password" minlength="12" maxlength="72" required></label>
+          </div>
+          <p class="upload-hint">Use at least 12 characters. Passwords are securely hashed and are not stored in your browser.</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px"><button class="button secondary" id="auth-mode" type="button">Create an account</button><button class="button primary" id="auth-submit" type="submit">Sign in</button></div>
+        </form>
+        <div class="auth-links" id="auth-links"><button id="auth-forgot" type="button">Forgot password?</button><button id="auth-resend" type="button">Resend verification</button></div>
+        <form id="email-action-form" hidden>
+          <label class="form-field"><span>Email</span><input id="auth-action-email" type="email" autocomplete="email" maxlength="254" required></label>
+          <p class="upload-hint" id="email-action-hint"></p>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px"><button class="button quiet" id="email-action-back" type="button">Back to sign in</button><button class="button primary" id="email-action-submit" type="submit"></button></div>
+        </form>
+        <form id="reset-form" hidden>
+          <div class="form-grid" style="grid-template-columns:1fr">
+            <label class="form-field"><span>New password</span><input id="reset-password" type="password" autocomplete="new-password" minlength="12" maxlength="72" required></label>
+            <label class="form-field"><span>Confirm new password</span><input id="reset-password-confirm" type="password" autocomplete="new-password" minlength="12" maxlength="72" required></label>
+          </div>
+          <p class="upload-hint">Use at least 12 characters.</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px"><button class="button quiet" id="reset-back" type="button">Back to sign in</button><button class="button primary" id="reset-submit" type="submit">Reset password</button></div>
+        </form>
+      </section>
+      <div id="workspace" hidden>
+      <div class="matcher-heading"><p class="eyebrow">Your next move</p><h1>Find work that fits.</h1><p class="sub">Roles matched to your skills and experience.</p></div>
+      <div id="message" class="message" role="status"></div>
+      <form class="upload-card workspace-resume-card" id="resume-form">
+        <div class="upload-card-head"><label class="upload-kicker" for="resume-file">01 · Upload resume</label></div>
+        <input class="resume-input" id="resume-file" type="file" accept=".docx,.pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf" required>
+        <button class="dropzone" id="resume-dropzone" type="button" aria-describedby="resume-file-name">
+          <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 16.2A4.5 4.5 0 0 0 18 7.5h-1.3A7 7 0 0 0 3.2 10a4 4 0 0 0 .8 7.9"/><path d="M12 12v9m-3-3 3-3 3 3"/></svg>
+          <strong>Drop PDF / DOCX or click</strong>
+          <span class="dropzone-copy">PDF or DOCX · up to 40 MB<br>We’ll extract name, role, experience, skills &amp; location</span>
+          <span class="file-name" id="resume-file-name" aria-live="polite"></span>
+        </button>
+        <div class="sample-group">
+          <p class="sample-divider">Or try a sample</p>
+          <div class="sample-chips" aria-label="Sample resume examples">
+            <span class="sample-chip">Senior Java / Spring Engineer</span>
+            <span class="sample-chip">Full-stack React Developer</span>
+            <span class="sample-chip">DevOps Lead</span>
+          </div>
+        </div>
+        <button class="button primary resume-submit" id="resume-submit" type="submit" hidden>Analyze resume</button>
+      </form>
+      <div class="workspace-grid">
+        <aside class="profile-sidebar">
+          <section class="profile-card" id="profile-stats">
+            <div class="profile-card-head"><div><p class="stat-label">Candidate profile</p><h2 id="profile-name">Upload a resume</h2></div><a id="resume-download" href="/api/profile/resume" hidden style="font-size:11px;font-weight:700;text-decoration:none">Resume ↗</a></div>
+            <div class="profile-facts">
+              <div><span class="profile-fact-label">Target role</span><span class="profile-fact-value" id="profile-role">—</span></div>
+              <div><span class="profile-fact-label">Experience</span><span class="profile-fact-value" id="profile-experience">—</span></div>
+              <div><span class="profile-fact-label">Location</span><span class="profile-fact-value" id="profile-location">—</span></div>
+            </div>
+          </section>
+          <section class="profile-skills-card" aria-label="Skills detected">
+            <h3 class="skills-heading">Skills detected</h3><div class="skills-value" id="profile-skills">Upload a resume to see your skills.</div>
+          </section>
+        </aside>
+        <section id="discover-panel" class="results-column">
+        <div class="section-heading feed-heading">
+          <div><h2>Jobs matched to your resume</h2><p id="feed-caption">Find recent openings ranked by skills and experience.</p></div>
+        </div>
+        <div class="filter-panel" aria-label="Job search filters">
+          <div class="filter-field"><label for="feed-search">Keyword</label><input id="feed-search" type="search" placeholder="Title, company, or skill"></div>
+          <div class="filter-field"><label for="location-filter">Location</label><input id="location-filter" type="search" placeholder="City or country"></div>
+          <div class="filter-field"><label for="arrangement-filter">Work style</label><select id="arrangement-filter" aria-label="Work arrangement"><option value="">Any arrangement</option><option value="remote">Remote</option><option value="hybrid">Hybrid</option><option value="onsite">On-site</option><option value="offshore">Offshore</option></select></div>
+          <div class="filter-field"><label for="salary-filter">Minimum salary</label><input id="salary-filter" type="number" min="0" step="10000" placeholder="Annual INR"></div>
+          <div class="filter-field"><label for="minimum-score">Minimum resume match</label><select id="minimum-score" aria-label="Minimum resume match"></select></div>
+          <div class="filter-actions"><button class="button primary" id="fetch-jobs" disabled>Find jobs</button><button class="button quiet" id="clear-filters" type="button">Clear filters</button></div>
+        </div>
+        <p class="active-filters" id="active-filters">Showing roles posted in the last 7 days.</p>
+        <div class="feed-status" id="feed-status" aria-live="polite"></div>
+        <div class="results-summary" aria-live="polite"><strong id="results-count">Ready to search</strong><span id="results-sources">Upload your resume to get started.</span></div>
+        <div class="job-list" id="job-list"><div class="empty">Upload your resume, then select “Find jobs” to see recent matches.</div></div>
+        <div class="pagination-bar" id="job-pagination" hidden>
+          <span id="pagination-summary" aria-live="polite"></span>
+          <label for="jobs-per-page">Jobs per page
+            <select id="jobs-per-page" aria-label="Jobs per page">
+              <option value="10">10</option><option value="15">15</option><option value="20">20</option><option value="25">25</option><option value="30">30</option>
+            </select>
+          </label>
+          <div class="pagination-controls">
+            <button class="button quiet" id="previous-page" type="button">Previous</button>
+            <span id="pagination-page"></span>
+            <button class="button quiet" id="next-page" type="button">Next</button>
+          </div>
+        </div>
+        </section>
+      </div>
+      <section class="board-section" id="board-section">
+        <div class="section-heading board-heading"><div><h2>Explore job boards</h2><p id="board-caption">Choose a job board to search for roles that fit your profile.</p><p class="board-count" id="board-count" aria-live="polite"></p></div><input id="board-search" type="search" aria-label="Filter job boards" placeholder="Find a job board"></div>
+        <div class="site-grid" id="site-grid"></div>
+      </section>
+      <section class="tracker-section" id="tracker-panel" hidden>
+        <div class="section-heading tracker-top"><div><h2>Your application tracker</h2><p>Track roles you have saved or applied to manually.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="button quiet" id="test-email">Send test email</button><button class="button primary" id="toggle-add">+ Add a job</button></div></div>
+        <form class="form-panel" id="application-form" hidden>
+          <div class="form-grid">
+            <label class="form-field"><span>Job title *</span><input name="title" placeholder="e.g. Java Backend Engineer" maxlength="255" required></label>
+            <label class="form-field"><span>Company</span><input name="company" placeholder="Company name" maxlength="255"></label>
+            <label class="form-field"><span>Job board</span><input name="source" placeholder="Where you found it" maxlength="100"></label>
+            <label class="form-field"><span>Job link</span><input name="jobUrl" type="url" placeholder="https://…" maxlength="2048"></label>
+            <label class="form-field description-field"><span>Job description *</span><textarea name="description" placeholder="Add the role description so you can review its requirements later…" maxlength="4000" required></textarea></label>
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:11px"><button class="button quiet" type="button" id="cancel-add">Cancel</button><button class="button primary" type="submit">Add to tracker</button></div>
+        </form>
+        <div class="application-list" id="application-list"><div class="empty">No saved jobs yet. Save a recommended match or add one from a job site.</div></div>
+      </section>
+      <p class="footer">Resume processing and saved applications stay with this app. Job-board sign-in and final application submission happen on the selected site; MyJobs-API never asks for or stores your job-board password.</p>
+      </div>
+    </main>
+  </div>
+  <script>
+    const state = {profile:null,websites:[],applications:[],jobs:[],feeds:[],hasSearched:false,currentJobPage:1,jobsLoading:false,pendingJobRefresh:false,searchGeneration:0,resumeUploadInProgress:false,authToken:sessionStorage.getItem("myjobs-token"),authMode:"login",emailAction:"forgot",resetToken:null};
+    const statusOptions = ["SAVED","APPLIED","INTERVIEW","OFFER","REJECTED","WITHDRAWN"];
+    const minimumMatchScores = Array.from({length:10},(_,index)=>(index+1)*10);
+    document.getElementById("minimum-score").innerHTML=minimumMatchScores
+      .map(score=>`<option value="${score}" ${score===10?"selected":""}>${score}% or higher</option>`)
+      .join("");
+    const esc = value => String(value ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+    const message = (text,type="error") => { const box=document.getElementById("message");box.textContent=text;box.className="message "+type; };
+    async function request(url,options={}) {
+      const headers=new Headers(options.headers||{});
+      if(state.authToken&&!url.startsWith("/api/auth/"))headers.set("Authorization","Bearer "+state.authToken);
+      const response=await fetch(url,{...options,headers});
+      if(response.status===401&&state.authToken){sessionStorage.removeItem("myjobs-token");state.authToken=null;showAuth();const authError=document.getElementById("auth-error");authError.textContent="Your session expired. Sign in again to continue.";authError.hidden=false;}
+      if(!response.ok){let detail="Request failed ("+response.status+").";try{const body=await response.json();detail=body.message||detail}catch(_){}throw new Error(detail)}
+      if(response.status===204)return null;
+      return response.json();
+    }
+    async function downloadSavedResume(event){
+      event.preventDefault();
+      try{
+        const headers=new Headers();
+        if(state.authToken)headers.set("Authorization","Bearer "+state.authToken);
+        const response=await fetch("/api/profile/resume",{headers});
+        if(response.status===401&&state.authToken){
+          sessionStorage.removeItem("myjobs-token");state.authToken=null;showAuth();
+          setAuthFeedback("Your session expired. Sign in again to download your resume.","error");
+          return;
+        }
+        if(!response.ok){
+          let detail="Could not download the saved resume ("+response.status+").";
+          try{const body=await response.json();detail=body.message||detail}catch(_){}
+          throw new Error(detail);
+        }
+        const disposition=response.headers.get("Content-Disposition")||"";
+        const encodedName=disposition.match(/filename\*=UTF-8''([^;]+)/i);
+        const plainName=disposition.match(/filename="?([^";]+)"?/i);
+        let filename=plainName?plainName[1]:"resume";
+        if(encodedName){
+          try{filename=decodeURIComponent(encodedName[1])}catch(_){}
+        }
+        const objectUrl=URL.createObjectURL(await response.blob());
+        const link=document.createElement("a");
+        link.href=objectUrl;link.download=filename;document.body.appendChild(link);link.click();link.remove();
+        window.setTimeout(()=>URL.revokeObjectURL(objectUrl),1000);
+      }catch(error){message(error.message)}
+    }
+    function showAuth(){
+      document.getElementById("auth-panel").hidden=false;
+      document.getElementById("workspace").hidden=true;
+      document.getElementById("account-controls").hidden=true;
+      document.getElementById("workspace-tabs").hidden=true;
+      document.querySelector(".topbar").classList.remove("workspace-open");
+      state.authMode="login";state.resetToken=null;
+      document.getElementById("auth-form").reset();
+      document.getElementById("email-action-form").reset();
+      document.getElementById("reset-form").reset();
+      state.profile=null;state.applications=[];state.jobs=[];state.feeds=[];
+      clearResumeDerivedView();
+      showLoginForm();
+    }
+    function setAuthFeedback(text="",type="success"){
+      const error=document.getElementById("auth-error"),status=document.getElementById("auth-status");
+      error.hidden=type!=="error";status.hidden=type!=="success"||!text;
+      if(type==="error")error.textContent=text;else status.textContent=text;
+    }
+    function showLoginForm(message="",type="success"){
+      state.authMode="login";
+      document.getElementById("auth-title").textContent="Sign in";
+      document.getElementById("auth-description").textContent="Your resume, job matches, and application tracker are private to your account.";
+      document.getElementById("auth-form").hidden=false;
+      document.getElementById("email-action-form").hidden=true;
+      document.getElementById("reset-form").hidden=true;
+      document.getElementById("auth-links").hidden=false;
+      document.getElementById("auth-submit").textContent="Sign in";
+      document.getElementById("auth-mode").textContent="Create an account";
+      document.getElementById("auth-password").autocomplete="current-password";
+      setAuthFeedback(message,type);
+    }
+    function showEmailActionForm(action){
+      state.emailAction=action;
+      document.getElementById("auth-title").textContent=action==="forgot"?"Reset your password":"Resend verification email";
+      document.getElementById("auth-description").textContent=action==="forgot"
+        ?"Enter your account email and we will send a password reset link if the account exists."
+        :"Enter your account email and we will send a new verification link if verification is still needed.";
+      document.getElementById("auth-form").hidden=true;
+      document.getElementById("email-action-form").hidden=false;
+      document.getElementById("reset-form").hidden=true;
+      document.getElementById("auth-links").hidden=true;
+      document.getElementById("email-action-submit").textContent=action==="forgot"?"Send reset link":"Send verification link";
+      document.getElementById("email-action-hint").textContent="If the account is eligible, an email with a single-use link will be sent.";
+      document.getElementById("auth-action-email").value=document.getElementById("auth-email").value;
+      setAuthFeedback();
+    }
+    function showResetForm(token){
+      state.resetToken=token;
+      document.getElementById("auth-title").textContent="Choose a new password";
+      document.getElementById("auth-description").textContent="Set a new password for your MyJobs account.";
+      document.getElementById("auth-form").hidden=true;
+      document.getElementById("email-action-form").hidden=true;
+      document.getElementById("reset-form").hidden=false;
+      document.getElementById("auth-links").hidden=true;
+      setAuthFeedback();
+    }
+    function clearAuthLinkFromAddressBar(){
+      window.history.replaceState({},document.title,window.location.pathname);
+    }
+    async function verifyEmailFromLink(token){
+      clearAuthLinkFromAddressBar();
+      showLoginForm("Verifying your email...");
+      try{
+        const result=await request("/api/auth/verify-email",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({token})});
+        setAuthFeedback(result.message);
+      }catch(error){setAuthFeedback(error.message,"error")}
+    }
+    async function initializeAuth(){
+      const query=new URLSearchParams(window.location.search);
+      const verifyToken=query.get("verifyToken"),resetToken=query.get("resetToken");
+      if(verifyToken){showAuth();await verifyEmailFromLink(verifyToken);return}
+      if(resetToken){showAuth();clearAuthLinkFromAddressBar();showResetForm(resetToken);return}
+      if(state.authToken)await showWorkspace();else showAuth();
+    }
+    async function showWorkspace(){
+      document.getElementById("auth-panel").hidden=true;
+      document.getElementById("workspace").hidden=false;
+      document.getElementById("account-controls").hidden=false;
+      document.getElementById("workspace-tabs").hidden=false;
+      document.querySelector(".topbar").classList.add("workspace-open");
+      try{
+        const websites=Promise.all([request("/api/websites"),request("/api/websites/catalog")])
+          .then(([boards,sources])=>{state.websites=[...boards,...sources];renderBoards()});
+        await Promise.all([websites,loadProfile().catch(error=>{if(error.message.includes("Upload a resume")){clearResumeDerivedView();return}throw error}),loadApplications()]);
+      }catch(error){message(error.message)}
+    }
+    function boardSearchUrl(board){
+      const base=board.url;
+      const role=state.profile?.targetRole||"";
+      const location=state.profile?.preferredLocation||"";
+      const name=(board.name||"").toLowerCase();
+      if(name==="linkedin")return "https://www.linkedin.com/jobs/search/?"+(role?"keywords="+encodeURIComponent(role):"")+(role&&location?"&":"")+(location?"location="+encodeURIComponent(location):"");
+      if(name==="indeed")return "https://in.indeed.com/jobs?"+(role?"q="+encodeURIComponent(role):"")+(role&&location?"&":"")+(location?"l="+encodeURIComponent(location):"");
+      if(name==="naukri"){
+        if(!role&&!location)return base;
+        const roleSlug=role.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+        const locationSlug=location.split(",")[0].toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+        return "https://www.naukri.com/"+(roleSlug?roleSlug+"-jobs":"jobs")+(locationSlug?"-in-"+locationSlug:"");
+      }
+      return base;
+    }
+    function renderBoards(){
+      const grid=document.getElementById("site-grid");
+      const role=state.profile?.targetRole||"roles";
+      const location=state.profile?.preferredLocation;
+      document.getElementById("board-caption").textContent="Search "+role+(location?" in "+location:"")+" using your profile. Links open the official job-board websites.";
+      const filter=(document.getElementById("board-search")?.value||"").trim().toLowerCase();
+      const boards=state.websites.filter(board=>!filter||(board.name||"").toLowerCase().includes(filter)
+        ||(board.kind||"").toLowerCase().includes(filter));
+      document.getElementById("board-count").textContent=filter
+        ?boards.length+" of "+state.websites.length+" boards"
+        :state.websites.length+" job boards";
+      grid.innerHTML=boards.map(board=>`<a class="site-link" href="${esc(boardSearchUrl(board))}" target="_blank" rel="noopener noreferrer">${esc(board.name)}<span>${esc(board.status||"Search roles on this site")} ↗</span></a>`).join("")
+        ||'<div class="empty">No job boards match your search.</div>';
+    }
+    function renderProfile(profile){
+      state.profile=profile;
+      document.getElementById("fetch-jobs").disabled=false;
+      document.querySelector(".upload-kicker").textContent="01 · Replace your resume";
+      document.getElementById("profile-name").textContent=profile.fullName||"Not found in resume";
+      document.getElementById("profile-role").textContent=profile.targetRole||"—";
+      document.getElementById("profile-experience").textContent=profile.experienceYears>0?profile.experienceYears+" years":"—";
+      document.getElementById("profile-location").textContent=profile.preferredLocation||"—";
+      const rawSkills=Array.isArray(profile.skills)
+        ?profile.skills.map(skill=>String(skill).trim()).filter(Boolean)
+        :typeof profile.skills==="string"
+          ?profile.skills.split(",").map(skill=>skill.trim()).filter(Boolean)
+          :[];
+      const uniqueSkills=new Map();
+      rawSkills.forEach(skill=>{
+        const key=normalizeResumeSkill(skill);
+        if(key)uniqueSkills.set(key,key==="rest"||key==="rest api"||key==="rest apis"?"REST APIs":skill);
+      });
+      const skills=[...uniqueSkills.values()];
+      document.getElementById("profile-skills").innerHTML=skills.length
+        ?skills.map(skill=>`<span class="pill">${esc(skill)}</span>`).join("")
+        :"No supported skills detected";
+      document.getElementById("resume-download").hidden=false;
+    }
+    function renderFeed(){
+      const feedStatus=document.getElementById("feed-status");
+      feedStatus.innerHTML=state.feeds.map(feed=>`<span class="feed-badge ${feed.available?"":"offline"}">${esc(feed.source)}: ${feed.available?feed.count+" jobs":esc(feed.message||"Unavailable")}</span>`).join("");
+      const query=document.getElementById("feed-search").value.trim().toLowerCase();
+      const location=document.getElementById("location-filter").value.trim().toLowerCase();
+      const arrangement=document.getElementById("arrangement-filter").value;
+      const minimumSalary=Number(document.getElementById("salary-filter").value)||0;
+      const jobs=state.jobs.filter(job=>{
+        const searchable=[job.title,job.company,job.location,job.source,job.description,(job.tags||[]).join(" ")].join(" ").toLowerCase();
+        if(query&&!searchable.includes(query))return false;
+        if(location&&!(job.location||"").toLowerCase().includes(location))return false;
+        if(arrangement&&!hasArrangement(job,arrangement))return false;
+        if(minimumSalary&&annualInrSalary(job)<minimumSalary)return false;
+        return true;
+      });
+      const activeFilters=[];
+      if(query)activeFilters.push("Keyword: "+query);
+      if(location)activeFilters.push("Location: "+location);
+      if(arrangement)activeFilters.push("Work style: "+arrangement);
+      if(minimumSalary)activeFilters.push("Salary: ₹"+minimumSalary+"+");
+      if(document.getElementById("minimum-score").value!=="10")activeFilters.push(
+        "Match: "+document.getElementById("minimum-score").value+"%+");
+      document.getElementById("active-filters").textContent=activeFilters.length
+        ?"Filters applied · "+activeFilters.join(" · ")+" · "+jobs.length+" results"
+        :"Showing roles posted in the last 7 days.";
+      document.getElementById("results-count").textContent=jobs.length+" matching "+(jobs.length===1?"role":"roles");
+      const availableFeeds=state.feeds.filter(feed=>feed.available).length;
+      document.getElementById("results-sources").textContent=state.feeds.length
+        ?availableFeeds+" of "+state.feeds.length+" public feeds available"
+        :"Matching jobs from public feeds appear here.";
+      const list=document.getElementById("job-list");
+      const pagination=document.getElementById("job-pagination");
+      if(!jobs.length){
+        pagination.hidden=true;
+        list.innerHTML=state.hasSearched&&state.jobs.length
+          ?'<div class="empty"><strong>No jobs match these filters.</strong><br>Clear filters or widen your search to see more results.</div>'
+          :state.hasSearched
+            ?'<div class="empty"><strong>No matching jobs found.</strong><br>Try again later or explore the job boards below.</div>'
+          :'<div class="empty"><strong>Your job matches will appear here.</strong><br>Upload a resume, then select “Find jobs” to search public feeds.</div>';
+        return;
+      }
+      const pageSize=Number(document.getElementById("jobs-per-page").value)||10;
+      const pageCount=Math.ceil(jobs.length/pageSize);
+      state.currentJobPage=Math.min(Math.max(state.currentJobPage,1),pageCount);
+      const firstJob=(state.currentJobPage-1)*pageSize;
+      const pageJobs=jobs.slice(firstJob,firstJob+pageSize);
+      pagination.hidden=false;
+      document.getElementById("pagination-summary").textContent="Showing "+(firstJob+1)+"–"+Math.min(firstJob+pageSize,jobs.length)+" of "+jobs.length+" jobs";
+      document.getElementById("pagination-page").textContent="Page "+state.currentJobPage+" of "+pageCount;
+      document.getElementById("previous-page").disabled=state.currentJobPage===1;
+      document.getElementById("next-page").disabled=state.currentJobPage===pageCount;
+      list.innerHTML=pageJobs.map(job=>{
+        const description=plainText(job.description);
+        const listingText=[job.title,description,(job.tags||[]).join(" ")].join(" ");
+        const salary=job.salary||extractSalary(listingText);
+        const experience=job.requiredExperience||extractExperienceRequirement(listingText);
+        const jobDetails=[salary?`<span class="job-detail"><strong>Salary:</strong> ${esc(salary)}</span>`:"",experience?`<span class="job-detail"><strong>Experience:</strong> ${esc(experience)}</span>`:""].filter(Boolean).join("");
+        const matchedSkills=(job.matchedSkills||[]).filter(Boolean);
+        const relatedMatches=(job.relatedSkillMatches||[]).filter(match=>match&&match.jobKeyword);
+        const relatedKeys=new Set(relatedMatches.map(match=>normalizeJobKeyword(match.jobKeyword)));
+        const jobKeywords=[...new Set([
+          ...(job.jobKeywords||[]),
+          ...(job.tags||[]),
+          ...matchedSkills,
+          ...relatedMatches.map(match=>match.jobKeyword)
+        ].map(keyword=>String(keyword||"").trim()).filter(Boolean))];
+        const keywordPills=jobKeywords.map(keyword=>{
+          const normalized=normalizeJobKeyword(keyword);
+          const isExact=matchedSkills.some(skill=>jobKeywordMatches(keyword,skill));
+          const isRelated=relatedKeys.has(normalized)
+            ||[...relatedKeys].some(related=>jobKeywordMatches(keyword,related));
+          return `<span class="job-keyword ${isExact?"matched":isRelated?"related":""}">${esc(keyword)}</span>`;
+        }).join("");
+        const keywordSection=keywordPills?`<div class="job-keyword-list" aria-label="Job keywords">${keywordPills}</div>`:"";
+        const descriptionExcerpt=description.length>600?description.slice(0,600).replace(/\s+\S*$/,"")+"…":description;
+        const descriptionSection=descriptionExcerpt?`<p class="feed-description">${esc(descriptionExcerpt)}</p>`:"";
+        const posted=job.postedAt?new Date(job.postedAt).toLocaleDateString():"Date not listed";
+        const score=Math.max(0,Math.min(100,Number(job.matchScore)||0));
+        const coveredKeywords=jobKeywords.filter(keyword=>matchedSkills.some(skill=>jobKeywordMatches(keyword,skill))
+          ||relatedMatches.some(match=>jobKeywordMatches(keyword,match.jobKeyword)));
+        const coverage=jobKeywords.length?Math.round(coveredKeywords.length/jobKeywords.length*100):0;
+        const workStyle=hasArrangement(job,"remote")?"REMOTE":hasArrangement(job,"hybrid")?"HYBRID":"";
+        const matchSummary=[workStyle,`SKILL COVERAGE ${coverage}%`,`${jobKeywords.length} JOB SKILLS`,experience?`NEEDS ${esc(experience)}`:""]
+          .filter(Boolean).join(" · ");
+        return `<article class="job-card"><div class="score-ring" style="--match-angle:${score*3.6}deg" aria-label="${score}% match"><span>${score}%</span></div><div class="job-card-content"><h3 class="job-title">${esc(job.title||"Untitled role")}</h3><div class="job-meta"><span>${esc(job.company||"Company not listed")}</span><span>·</span><span>${esc(job.location||"Location not listed")}</span></div><div class="job-meta" style="margin-top:8px;font:500 9px 'JetBrains Mono',monospace;letter-spacing:.06em">${matchSummary}</div>${jobDetails?`<div class="job-details">${jobDetails}</div>`:""}${keywordSection}${descriptionSection}<a class="job-open" href="${esc(job.url)}" target="_blank" rel="noopener noreferrer">Apply ↗</a></div></article>`;
+      }).join("");
+    }
+    function normalizeJobKeyword(value){
+      return String(value||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim().replace(/\s+/g," ");
+    }
+    function normalizeResumeSkill(value){
+      return String(value||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim().replace(/\s+/g," ");
+    }
+    function jobKeywordMatches(keyword,skill){
+      const normalizedKeyword=normalizeJobKeyword(keyword);
+      const normalizedSkill=normalizeJobKeyword(skill);
+      return !!normalizedKeyword&&!!normalizedSkill
+        &&(` ${normalizedKeyword} `.includes(` ${normalizedSkill} `)
+          ||` ${normalizedSkill} `.includes(` ${normalizedKeyword} `));
+    }
+    function plainText(value){
+      const parsed=new DOMParser().parseFromString(String(value||""),"text/html");
+      parsed.body.querySelectorAll("script,style").forEach(element=>element.remove());
+      parsed.body.querySelectorAll("br,p,div,li,section,h1,h2,h3,h4,h5,h6").forEach(element=>{
+        element.after(parsed.createTextNode("\n"));
+      });
+      return (parsed.body.textContent||"").replace(/\u00a0/g," ").replace(/[ \t]+\n/g,"\n").replace(/\n{3,}/g,"\n\n").trim();
+    }
+    function extractSalary(text){
+      const labeled=text.match(/(?:salary|compensation|pay)\s*[:\-]\s*([^\n.;]{1,70})/i);
+      if(labeled)return labeled[1].trim();
+      const currency=text.match(/(?:₹|INR|Rs\.?|USD|EUR|GBP|\$|€|£)\s*[\d,.]+\s*(?:-|–|to)\s*(?:(?:₹|INR|Rs\.?|USD|EUR|GBP|\$|€|£)\s*)?[\d,.]+\s*(?:LPA|lakhs?(?:\s+per\s+annum)?|per\s+(?:annum|year|month)|\/(?:year|month))?/i)
+        ||text.match(/(?:₹|INR|Rs\.?|\$|€|£)\s*[\d,.]+\s*(?:LPA|lakhs?(?:\s+per\s+annum)?|per\s+(?:annum|year|month)|\/(?:year|month))/i)
+        ||text.match(/\b[\d,.]+\s*(?:-|–|to)\s*[\d,.]+\s*(?:LPA|lakhs?(?:\s+per\s+annum)?|per\s+(?:annum|year|month)|\/(?:year|month))\b/i)
+        ||text.match(/\b[\d,.]+\s*(?:LPA|lakhs?(?:\s+per\s+annum)?|per\s+(?:annum|year|month)|\/(?:year|month))\b/i);
+      return currency?currency[0].trim():"";
+    }
+    function extractExperienceRequirement(text){
+      const labeled=text.match(/(?:experience|work experience)\s*[:\-]\s*([^\n.;]{1,50})/i);
+      const range=text.match(/\b(\d+(?:\.\d+)?)\s*(?:-|–|to)\s*(\d+(?:\.\d+)?)\s*(?:\+?\s*)?(?:years?|yrs?)\b/i);
+      const single=text.match(/\b(\d+(?:\.\d+)?)\s*\+?\s*(?:years?|yrs?)\s+(?:of\s+)?(?:relevant\s+)?experience\b/i)
+        ||text.match(/\b(?:minimum|at least)\s+(\d+(?:\.\d+)?)\s*(?:years?|yrs?)\b/i);
+      return labeled?labeled[1].trim():range?`${range[1]}-${range[2]} years`:single?`${single[1]}+ years`:"";
+    }
+    function hasArrangement(job,arrangement){
+      const text=[job.location,job.description,(job.tags||[]).join(" ")].join(" ").replace(/<[^>]*>/g," ").toLowerCase();
+      if(arrangement==="offshore")return /\boffshore\b/.test(text);
+      if(arrangement==="remote")return /\b(remote|work from home|wfh)\b/.test(text)&&!/\boffshore\b/.test(text);
+      if(arrangement==="hybrid")return /\bhybrid\b/.test(text);
+      if(arrangement==="onsite")return /\b(on[ -]?site|in[ -]?office|on-prem(?:ises)?)\b/.test(text);
+      return true;
+    }
+    function annualInrSalary(job){
+      const text=[job.title,job.description,(job.tags||[]).join(" ")].join(" ").replace(/<[^>]*>/g," ");
+      const range=text.match(/(?:₹|INR|Rs\.?)?\s*([\d,.]+)\s*(?:-|–|to)\s*([\d,.]+)\s*(LPA|lakhs?(?:\s+per\s+annum)?|per\s+annum|per\s+year)\b/i)
+        ||text.match(/(?:₹|INR|Rs\.?)\s*([\d,.]+)\s*(?:-|–|to)\s*([\d,.]+)\s*(?:per\s+annum|per\s+year)\b/i);
+      const single=text.match(/(?:₹|INR|Rs\.?)\s*([\d,.]+)\s*(LPA|lakhs?(?:\s+per\s+annum)?|per\s+annum|per\s+year)\b/i)
+        ||text.match(/([\d,.]+)\s*(LPA|lakhs?\s+per\s+annum)\b/i);
+      const amount=range?range[1]:single?single[1]:null;
+      const unit=range?range[3]:single?single[2]:"";
+      if(!amount)return 0;
+      const value=Number(amount.replace(/,/g,""));
+      if(!Number.isFinite(value))return 0;
+      return /\bLPA\b|lakhs?/i.test(unit)?value*100000:value;
+    }
+    async function fetchJobs(){
+      if(!state.profile)return;
+      if(state.jobsLoading){state.pendingJobRefresh=true;return}
+      state.jobsLoading=true;
+      const generation=state.searchGeneration;
+      const button=document.getElementById("fetch-jobs");button.disabled=true;button.textContent="Searching…";
+      document.getElementById("results-sources").textContent="Checking public job feeds for recent roles…";
+      if(!state.jobs.length)document.getElementById("job-list").innerHTML='<div class="loading-state"><span class="spinner" aria-hidden="true"></span>Searching for jobs that fit your profile…</div>';
+      try{
+        const minimumScore=document.getElementById("minimum-score").value;
+        const result=await request("/api/jobs?limit=250&minimumMatchScore="+encodeURIComponent(minimumScore)+"&postedWithinDays=7");
+        if(generation!==state.searchGeneration)return;
+        state.jobs=result.jobs||[];state.feeds=result.feeds||[];state.currentJobPage=1;
+        state.hasSearched=true;
+        const stamp=result.fetchedAt?new Date(result.fetchedAt).toLocaleString():"just now";
+        document.getElementById("feed-caption").textContent=state.jobs.length+" jobs from the last 7 days scoring at least "+minimumScore+"% for "+(result.candidateRole||"your profile")+" · Updated "+stamp;
+        renderFeed();
+        const availableFeeds=state.feeds.filter(feed=>feed.available).length;
+        message(state.jobs.length
+          ? "Found "+state.jobs.length+" matching jobs from "+availableFeeds+" of "+state.feeds.length+" available feeds."
+          : "Search complete. No jobs met the selected match and date filters; "+availableFeeds+" of "+state.feeds.length+" feeds are available.","success");
+      }catch(error){
+        renderFeed();
+        if(!state.jobs.length)document.getElementById("job-list").innerHTML=
+          '<div class="empty"><strong>Could not load job matches.</strong><br>Check your connection and try again.</div>';
+        document.getElementById("results-sources").textContent="The job search could not complete. Try again in a moment.";
+        message(error.message);
+      }
+      finally{state.jobsLoading=false;button.disabled=!state.profile;button.textContent="Find jobs";if(state.pendingJobRefresh){state.pendingJobRefresh=false;fetchJobs()}}
+    }
+    function clearResumeDerivedView(){
+      state.searchGeneration++;
+      state.profile=null;state.jobs=[];state.feeds=[];state.hasSearched=false;state.currentJobPage=1;
+      document.getElementById("profile-name").textContent="Upload a resume";
+      document.getElementById("profile-role").textContent="—";
+      document.getElementById("profile-experience").textContent="—";
+      document.getElementById("profile-location").textContent="—";
+      document.getElementById("profile-skills").textContent="—";
+      document.getElementById("fetch-jobs").disabled=true;
+      document.querySelector(".upload-kicker").textContent="01 · Upload resume";
+      document.getElementById("resume-download").hidden=true;
+      document.getElementById("feed-status").replaceChildren();
+      document.getElementById("feed-caption").textContent="Upload a resume to discover recent roles matched to your skills.";
+      document.getElementById("job-list").innerHTML='<div class="empty">Upload a resume to find relevant job matches.</div>';
+      document.getElementById("job-pagination").hidden=true;
+      document.getElementById("results-count").textContent="Ready to search";
+      document.getElementById("results-sources").textContent="Upload your resume to get started.";
+      document.getElementById("active-filters").textContent="Showing roles posted in the last 7 days.";
+      renderBoards();
+    }
+    function renderApplications(){
+      const apps=state.applications;
+      document.getElementById("tracker-count").textContent=apps.length?"("+apps.length+")":"";
+      const list=document.getElementById("application-list");
+      if(!apps.length){list.innerHTML='<div class="empty">No saved jobs yet. Save a recommended match or add one from a job site.</div>';return}
+      list.innerHTML=apps.map(app=>`<article class="application-card"><div><h3 class="job-title">${esc(app.title)}</h3><div class="app-company">${esc(app.company||"Company not added")} · ${esc(app.source||"Source not added")} · Updated ${app.updatedAt?new Date(app.updatedAt).toLocaleDateString():"just now"}</div>${app.description?`<p class="application-description">${esc(app.description)}</p>`:""}${app.jobUrl?`<a href="${esc(app.jobUrl)}" target="_blank" rel="noopener noreferrer">Open job listing ↗</a>`:""}<div class="app-company">${esc(app.notes||"")}</div></div><div style="display:flex;align-items:center;gap:7px"><select class="status-select" data-status="${esc(app.id)}" aria-label="Application status">${statusOptions.map(status=>`<option value="${status}" ${status===app.status?"selected":""}>${status[0]+status.slice(1).toLowerCase()}</option>`).join("")}</select><button class="button danger" data-delete="${esc(app.id)}" aria-label="Remove ${esc(app.title)}">Remove</button></div></article>`).join("");
+      list.querySelectorAll("[data-status]").forEach(select=>select.addEventListener("change",()=>updateApplication(select.dataset.status,select.value)));
+      list.querySelectorAll("[data-delete]").forEach(button=>button.addEventListener("click",()=>deleteApplication(button.dataset.delete)));
+    }
+    async function loadApplications(){state.applications=await request("/api/applications");renderApplications()}
+    async function updateApplication(id,status){
+      try{const current=state.applications.find(app=>app.id===id);const result=await request("/api/applications/"+encodeURIComponent(id),{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({status,notes:current?.notes||""})});await loadApplications();if(result.notificationEnabled&&!result.notificationSent)message(result.notificationMessage||"Status updated, but email notification failed.");}
+      catch(error){message(error.message);await loadApplications()}
+    }
+    async function deleteApplication(id){
+      try{await request("/api/applications/"+encodeURIComponent(id),{method:"DELETE"});await loadApplications()}
+      catch(error){message(error.message)}
+    }
+    async function loadProfile(){
+      try{const profile=await request("/api/profile");if(state.resumeUploadInProgress)return;renderProfile(profile);renderBoards();message("Resume profile loaded. Searching for recent matching jobs…","success");await fetchJobs()}
+      catch(error){if(!error.message.includes("Upload a resume"))throw error}
+    }
+    const resumeInput=document.getElementById("resume-file");
+    const resumeDropzone=document.getElementById("resume-dropzone");
+    const resumeSubmit=document.getElementById("resume-submit");
+    document.getElementById("resume-download").addEventListener("click",downloadSavedResume);
+    resumeDropzone.addEventListener("click",()=>resumeInput.click());
+    resumeInput.addEventListener("change",event=>{
+      const file=event.currentTarget.files[0];
+      if(!file){document.getElementById("resume-file-name").textContent="";resumeSubmit.hidden=true;return}
+      if(!/\.(docx|pdf)$/i.test(file.name)){message("Choose a PDF or DOCX resume.");resumeInput.value="";document.getElementById("resume-file-name").textContent="";resumeSubmit.hidden=true;return}
+      if(file.size>40*1024*1024){message("This resume is larger than 40 MB. Choose a smaller file.");resumeInput.value="";document.getElementById("resume-file-name").textContent="";resumeSubmit.hidden=true;return}
+      document.getElementById("resume-file-name").textContent=file.name+" · "+(file.size<1024*1024?(file.size/1024).toFixed(0)+" KB":(file.size/1024/1024).toFixed(1)+" MB");
+      resumeSubmit.hidden=false;
+    });
+    ["dragenter","dragover"].forEach(type=>resumeDropzone.addEventListener(type,event=>{
+      event.preventDefault();
+      resumeDropzone.classList.add("is-dragover");
+    }));
+    ["dragleave","dragend","drop"].forEach(type=>resumeDropzone.addEventListener(type,event=>{
+      event.preventDefault();
+      resumeDropzone.classList.remove("is-dragover");
+    }));
+    resumeDropzone.addEventListener("drop",event=>{
+      if(!event.dataTransfer.files.length)return;
+      resumeInput.files=event.dataTransfer.files;
+      resumeInput.dispatchEvent(new Event("change",{bubbles:true}));
+    });
+    document.getElementById("resume-form").addEventListener("submit",async event=>{
+      event.preventDefault();const file=document.getElementById("resume-file").files[0];if(!file)return;
+      if(!/\.(docx|pdf)$/i.test(file.name)){message("Choose a PDF or DOCX resume.");return}
+      if(file.size>40*1024*1024){message("This resume is larger than 40 MB. Choose a smaller file.");return}
+      const form=event.currentTarget;const button=form.querySelector('button[type="submit"]');button.disabled=true;button.textContent="Processing…";
+      state.resumeUploadInProgress=true;
+      clearResumeDerivedView();
+      const data=new FormData();data.append("file",file);
+      try{renderProfile(await request("/api/profile/resume",{method:"POST",body:data}));renderBoards();message("Resume analyzed. Searching public job feeds for recent matches…","success");await fetchJobs()}
+      catch(error){message(error.message)}
+      finally{state.resumeUploadInProgress=false;button.disabled=false;button.textContent="Analyze resume"}
+    });
+    document.querySelectorAll(".workspace-tabs .tab").forEach(button=>button.addEventListener("click",()=>{
+      document.querySelectorAll(".tab").forEach(tab=>tab.classList.toggle("active",tab===button));
+    document.querySelector(".workspace-grid").hidden=button.dataset.tab!=="discover";
+    document.getElementById("discover-panel").hidden=button.dataset.tab!=="discover";
+    document.getElementById("tracker-panel").hidden=button.dataset.tab!=="tracker";
+    document.getElementById("board-section").hidden=button.dataset.tab!=="discover";
+    if(button.dataset.tab==="discover"&&state.profile&&!state.hasSearched)fetchJobs();
+    }));
+    document.getElementById("toggle-add").addEventListener("click",()=>{document.getElementById("application-form").hidden=false;document.querySelector('#application-form [name="title"]').focus()});
+    document.getElementById("fetch-jobs").addEventListener("click",fetchJobs);
+    document.getElementById("board-search").addEventListener("input",renderBoards);
+    ["feed-search","location-filter","salary-filter"].forEach(id=>document.getElementById(id).addEventListener("input",()=>{state.currentJobPage=1;renderFeed()}));
+    ["arrangement-filter","minimum-score"].forEach(id=>document.getElementById(id).addEventListener("change",()=>{
+      state.currentJobPage=1;
+      if(id==="minimum-score"&&state.feeds.length)fetchJobs();
+      else renderFeed();
+    }));
+    document.getElementById("jobs-per-page").addEventListener("change",()=>{state.currentJobPage=1;renderFeed()});
+    document.getElementById("previous-page").addEventListener("click",()=>{if(state.currentJobPage>1){state.currentJobPage--;renderFeed()}});
+    document.getElementById("next-page").addEventListener("click",()=>{state.currentJobPage++;renderFeed()});
+    document.getElementById("clear-filters").addEventListener("click",()=>{
+      state.currentJobPage=1;
+      document.getElementById("feed-search").value="";
+      document.getElementById("location-filter").value="";
+      document.getElementById("arrangement-filter").value="";
+      document.getElementById("salary-filter").value="";
+      document.getElementById("minimum-score").value="10";
+      if(state.feeds.length)fetchJobs();else renderFeed();
+    });
+    document.getElementById("test-email").addEventListener("click",async()=>{
+      try{const result=await request("/api/applications/test-email");if(result.sent)message("Test email sent successfully.","success");else message(result.message||"Email notifications are disabled. Configure SMTP environment variables and enable notifications to send a test.","error")}
+      catch(error){message(error.message)}
+    });
+    document.getElementById("auth-mode").addEventListener("click",()=>{
+      state.authMode=state.authMode==="login"?"register":"login";
+      const registering=state.authMode==="register";
+      document.getElementById("auth-title").textContent=registering?"Create your account":"Sign in";
+      document.getElementById("auth-description").textContent=registering
+        ?"Register with your email and verify it before signing in."
+        :"Your resume, job matches, and application tracker are private to your account.";
+      document.getElementById("auth-submit").textContent=registering?"Register":"Sign in";
+      document.getElementById("auth-mode").textContent=registering?"Back to sign in":"Create an account";
+      document.getElementById("auth-password").autocomplete=registering?"new-password":"current-password";
+      setAuthFeedback();
+    });
+    document.getElementById("auth-form").addEventListener("submit",async event=>{
+      event.preventDefault();
+      const button=document.getElementById("auth-submit");
+      const registering=state.authMode==="register";
+      const email=document.getElementById("auth-email").value;
+      button.disabled=true;
+      try{
+        const result=await request("/api/auth/"+(registering?"register":"login"),{
+          method:"POST",headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({email,password:document.getElementById("auth-password").value})
+        });
+        if(registering){
+          document.getElementById("auth-password").value="";
+          document.getElementById("auth-action-email").value=email;
+          setAuthFeedback(result.message);
+          return;
+        }
+        state.authToken=result.accessToken;sessionStorage.setItem("myjobs-token",state.authToken);
+        document.getElementById("auth-form").reset();
+        await showWorkspace();
+      }catch(error){setAuthFeedback(error.message,"error")}
+      finally{button.disabled=false}
+    });
+    document.getElementById("auth-forgot").addEventListener("click",()=>showEmailActionForm("forgot"));
+    document.getElementById("auth-resend").addEventListener("click",()=>showEmailActionForm("resend"));
+    document.getElementById("email-action-back").addEventListener("click",()=>{
+      document.getElementById("auth-email").value=document.getElementById("auth-action-email").value;
+      showLoginForm();
+    });
+    document.getElementById("email-action-form").addEventListener("submit",async event=>{
+      event.preventDefault();
+      const button=document.getElementById("email-action-submit");
+      button.disabled=true;
+      const path=state.emailAction==="resend"?"resend-verification":"forgot-password";
+      try{
+        const result=await request("/api/auth/"+path,{
+          method:"POST",headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({email:document.getElementById("auth-action-email").value})
+        });
+        setAuthFeedback(result.message);
+      }catch(error){setAuthFeedback(error.message,"error")}
+      finally{button.disabled=false}
+    });
+    document.getElementById("reset-back").addEventListener("click",()=>{
+      state.resetToken=null;
+      document.getElementById("reset-form").reset();
+      showLoginForm();
+    });
+    document.getElementById("reset-form").addEventListener("submit",async event=>{
+      event.preventDefault();
+      const password=document.getElementById("reset-password").value;
+      if(password!==document.getElementById("reset-password-confirm").value){
+        setAuthFeedback("The passwords do not match.","error");
+        return;
+      }
+      const button=document.getElementById("reset-submit");
+      button.disabled=true;
+      try{
+        const result=await request("/api/auth/reset-password",{
+          method:"POST",headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({token:state.resetToken,newPassword:password})
+        });
+        state.resetToken=null;
+        document.getElementById("reset-form").reset();
+        showLoginForm(result.message);
+      }catch(error){setAuthFeedback(error.message,"error")}
+      finally{button.disabled=false}
+    });
+    document.getElementById("logout").addEventListener("click",()=>{
+      sessionStorage.removeItem("myjobs-token");state.authToken=null;showAuth();
+    });
+    document.getElementById("cancel-add").addEventListener("click",()=>{document.getElementById("application-form").reset();document.getElementById("application-form").hidden=true});
+    document.getElementById("application-form").addEventListener("submit",async event=>{
+      event.preventDefault();const form=new FormData(event.currentTarget);const body=Object.fromEntries(form.entries());
+      try{const result=await request("/api/applications",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});event.currentTarget.reset();event.currentTarget.hidden=true;await loadApplications();if(result.notificationEnabled&&!result.notificationSent)message(result.notificationMessage||"Job saved, but email notification failed.");else message("Job added to your tracker.","success")}
+      catch(error){message(error.message)}
+    });
+    initializeAuth();
+  </script>
+</body>
+</html>
